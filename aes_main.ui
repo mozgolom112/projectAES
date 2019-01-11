@@ -634,7 +634,6 @@ font: 8pt &quot;Swis721 Hv BT&quot;;}</string>
     <addaction name="menu_2"/>
     <addaction name="Load"/>
     <addaction name="separator"/>
-    <addaction name="help"/>
     <addaction name="Quit"/>
    </widget>
    <addaction name="menu"/>
@@ -643,11 +642,6 @@ font: 8pt &quot;Swis721 Hv BT&quot;;}</string>
   <action name="Load">
    <property name="text">
     <string>Загрузить файл</string>
-   </property>
-  </action>
-  <action name="help">
-   <property name="text">
-    <string>Помощь</string>
    </property>
   </action>
   <action name="Quit">

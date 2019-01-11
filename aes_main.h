@@ -37,8 +37,6 @@ private
 
     void on_save_result_triggered();
 
-    void on_help_triggered();
-
     void on_Quit_triggered();
 
     void on_showPass_clicked(bool checked);

@@ -37,9 +37,8 @@ void AES_main::on_encrypt_clicked() {
                 QByteArray encrypted = cWrapper.encryptAES(passphrase.toLatin1(), plain);
 
                 ui->takeText->setText(encrypted.toBase64());
-                //производим очистку Пароля и текста, с которым мы работали, после работы программы
+                //производим очистку текста, с которым мы работали, после работы программы
                 ui->setPass->clear();
-                ui->setText->clear();
             }
             catch (...) {
                 QMessageBox::critical(this, "Error", "Ошибка шифрования");
@@ -69,8 +68,7 @@ void AES_main::on_decrypt_clicked() {
                 QByteArray decrypted = cWrapper.decryptAES(passphrase.toLatin1(), encrypted);
 
                 ui->takeText->setText(decrypted);
-                //производим очистку Пароля и текста, с которым мы работали, после работы программы
-                ui->setPass->clear();
+                //производим очистку текста, с которым мы работали, после работы программы
                 ui->setText->clear();
             } catch (...) {
                 QMessageBox::critical(this, "Error",
@@ -154,9 +152,6 @@ void AES_main::on_save_result_triggered() {
     file.close();
 }
 
-void AES_main::on_help_triggered() {
-    QMessageBox::information(this, "Помощь", "\n8 (800) 100-49-94. Кризисная линия доверия. Круглосуточно");
-}
 
 void AES_main::on_Quit_triggered() {
     QMessageBox::StandardButton reply = QMessageBox::question(this, "Выход из программы",
