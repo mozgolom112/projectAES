@@ -1,5 +1,5 @@
 #include "cipher.h"
-
+//-s-
 Cipher::Cipher(QObject *parent) : QObject(parent) {
     initalize();
 }
