@@ -87,7 +87,7 @@ p, li { white-space: pre-wrap; }
            <bool>true</bool>
           </property>
           <property name="cursorWidth">
-           <number>1</number>
+           <number>2</number>
           </property>
           <property name="placeholderText">
            <string>Введите текст</string>

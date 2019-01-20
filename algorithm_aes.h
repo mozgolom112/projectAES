@@ -9,26 +9,30 @@
 #define BLOCKSIZE 256
 #define SALTSIZE 8
 
-class Cipher : public QObject , public IAlgorithm
+
+/**
+ * @brief The AES_algorithm class - realized class, which use AES_256 algorithm for (de\en)crypt. Powered by OpenSSl
+ */
+class AES_algorithm : public QObject , public IAlgorithm
 {
     Q_OBJECT
 public:
-    explicit Cipher(QObject* parent = nullptr);
-    ~Cipher();
+    explicit AES_algorithm(QObject* parent = nullptr);
+    ~AES_algorithm();
 
     /**
-     * @brief encrypt a byte array with AES 256 CBC
-     * @param passphrase
-     * @param data the byte array to encrypt
-     * @return
+     * @brief Encrypt a byte array with AES 256 CBC
+     * @param password, which use to for randomies bytes
+     * @param data - data, which should be encrypted
+     * @return encrypted data
      */
     QByteArray encryptAlgorithm(QByteArray password, QByteArray &data);
 
     /**
      * @brief Decrypt a byte array with AES 256 CBC
-     * @param passphrase
-     * @param data the byte array to decrypt
-     * @return
+     * @param password which use to for randomies bytes
+     * @param data - data to decrypt
+     * @return decrypted data
      */
     QByteArray decryptAlgorithm(QByteArray password, QByteArray &data);
 

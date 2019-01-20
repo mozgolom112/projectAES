@@ -10,15 +10,18 @@
 #include <openssl/aes.h>
 
 
-Cipher::Cipher(QObject* parent) : QObject(parent) {
+AES_algorithm::AES_algorithm(QObject* parent) : QObject(parent) {
+
     initalize();
 }
 
-Cipher::~Cipher() {
+AES_algorithm::~AES_algorithm() {
+
     finalize();
 }
 
-QByteArray Cipher::encryptAlgorithm(QByteArray passphrase, QByteArray &data) {
+QByteArray AES_algorithm::encryptAlgorithm(QByteArray passphrase, QByteArray &data) {
+
     QByteArray msalt = randomBytes(SALTSIZE);
     int rounds = 1;
     unsigned char key[KEYSIZE];
@@ -42,7 +45,7 @@ QByteArray Cipher::encryptAlgorithm(QByteArray passphrase, QByteArray &data) {
         throw ::std::exception(ERR_error_string(ERR_get_error(), nullptr));
     }
 
-    char *input = data.data();
+    char* input = data.data();
     int len = data.size();
 
     int c_len = len + AES_BLOCK_SIZE, f_len = 0;
@@ -79,7 +82,8 @@ QByteArray Cipher::encryptAlgorithm(QByteArray passphrase, QByteArray &data) {
     return finished;
 }
 
-QByteArray Cipher::decryptAlgorithm(QByteArray passphrase, QByteArray &data) {
+QByteArray AES_algorithm::decryptAlgorithm(QByteArray passphrase, QByteArray &data) {
+
     QByteArray msalt;
     if (QString(data.mid(0, 8)) == "Salted__") {
         msalt = data.mid(8, 8);
@@ -131,14 +135,13 @@ QByteArray Cipher::decryptAlgorithm(QByteArray passphrase, QByteArray &data) {
 
     EVP_CIPHER_CTX_cleanup(de);
 
-
     QByteArray decrypted = QByteArray(reinterpret_cast<char*>(plaintext), len);
     free(plaintext);
 
     return decrypted;
 }
 
-QByteArray Cipher::randomBytes(int size) {
+QByteArray AES_algorithm::randomBytes(int size) {
 
     unsigned char* arr = new unsigned char[size];
     RAND_bytes(arr, size);
@@ -148,13 +151,17 @@ QByteArray Cipher::randomBytes(int size) {
 
 }
 
-void Cipher::initalize() {
+void AES_algorithm::initalize() {
+
     ERR_load_crypto_strings();
     OpenSSL_add_all_algorithms();
     OPENSSL_config(nullptr);
 }
 
-void Cipher::finalize() {
+void AES_algorithm::finalize() {
+
     EVP_cleanup();
     ERR_free_strings();
 }
+
+
