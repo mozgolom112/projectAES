@@ -1,22 +1,22 @@
-#ifndef AES_MAIN_H
-#define AES_MAIN_H
+#ifndef MAIN_WINDOW_H
+#define MAIN_WINDOW_H
 
 #include <QMainWindow>
 #include <QActionGroup>
 
-#include "cipher.h"
+#include "algorithm_aes.h"
 
 namespace Ui {
-    class AES_main;
+    class main_window;
 }
 
-class AES_main : public QMainWindow {
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit AES_main(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
 
-    ~AES_main();
+    ~MainWindow();
 
 private
     slots:
@@ -47,11 +47,11 @@ private
     void on_Set_Test_Algorithm_triggered();
 
 private:
-    Ui::AES_main *ui;
+    Ui::main_window *ui;
 
     IAlgorithm* Method_of_algorithm {nullptr};
 
     QActionGroup* Algorithm_group {nullptr};
 };
 
-#endif // AES_MAIN_H
+#endif // MAIN_WINDOW_H
