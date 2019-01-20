@@ -1,5 +1,5 @@
-#ifndef CIPHER_H
-#define CIPHER_H
+#ifndef AES_H
+#define AES_H
 
 #include <QObject>
 #include "ialgorithm.h"
@@ -8,7 +8,6 @@
 #define IVSIZE 32
 #define BLOCKSIZE 256
 #define SALTSIZE 8
-
 
 class Cipher : public QObject , public IAlgorithm
 {
@@ -23,7 +22,7 @@ public:
      * @param data the byte array to encrypt
      * @return
      */
-    QByteArray encryptAlgorithm(QByteArray passphrase, QByteArray &data);
+    QByteArray encryptAlgorithm(QByteArray password, QByteArray &data);
 
     /**
      * @brief Decrypt a byte array with AES 256 CBC
@@ -31,7 +30,7 @@ public:
      * @param data the byte array to decrypt
      * @return
      */
-    QByteArray decryptAlgorithm(QByteArray passphrase, QByteArray &data);
+    QByteArray decryptAlgorithm(QByteArray password, QByteArray &data);
 
 signals:
 
@@ -58,4 +57,4 @@ private:
 
 };
 
-#endif // CIPHER_H
+#endif // AES_H
