@@ -1,7 +1,11 @@
-#include "aes_main.h"
-#include "ui_aes_main.h"
-#include "setpath.h"
-#include "cipher.h"
+#include "main_window.h"
+#include "ui_main_window.h"
+
+//Дополнительные окна
+#include "set_path_window.h"
+
+//Алгоритмы
+#include "algorithm_aes.h"
 
 #include <QClipboard>
 #include <QMessageBox>
@@ -10,9 +14,9 @@
 
 
 
-AES_main::AES_main(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
-        ui(new Ui::AES_main) {
+        ui(new Ui::main_window){
     ui->setupUi(this);
     //Дефолтный метод стоит AES шифрование
     Method_of_algorithm = new Cipher(nullptr);
@@ -37,12 +41,12 @@ AES_main::AES_main(QWidget *parent) :
     group->setExclusive(true);
 }
 
-AES_main::~AES_main() {
+MainWindow::~MainWindow() {
     delete Method_of_algorithm;
     delete ui;
 }
 
-void AES_main::on_encrypt_clicked() {
+void MainWindow::on_encrypt_clicked() {
 
 
     QString textforcipher = ui->setText->toPlainText();
@@ -71,7 +75,7 @@ void AES_main::on_encrypt_clicked() {
 
 }
 
-void AES_main::on_decrypt_clicked() {
+void MainWindow::on_decrypt_clicked() {
 
 
     if (ui->setText->toPlainText().toStdString() == "") {
@@ -102,24 +106,24 @@ void AES_main::on_decrypt_clicked() {
 }
 
 
-void AES_main::on_Button_for_copy1_clicked() {
+void MainWindow::on_Button_for_copy1_clicked() {
     QApplication::clipboard()->setText(ui->setText->toPlainText());
 }
 
-void AES_main::on_Button_for_cut1_clicked() {
+void MainWindow::on_Button_for_cut1_clicked() {
     ui->setText->clear();
     ui->setText->setFocus();
 }
 
-void AES_main::on_Button_for_copy2_clicked() {
+void MainWindow::on_Button_for_copy2_clicked() {
     QApplication::clipboard()->setText(ui->takeText->toPlainText());
 }
 
-void AES_main::on_Button_for_cut1_2_clicked() {
+void MainWindow::on_Button_for_cut1_2_clicked() {
     ui->takeText->clear();
 }
 
-void AES_main::on_Load_triggered() {
+void MainWindow::on_Load_triggered() {
     SetPath window(this, false, false);
     window.setModal(true);
     window.exec();
@@ -138,7 +142,7 @@ void AES_main::on_Load_triggered() {
 
 }
 
-void AES_main::on_save_text_triggered() {
+void MainWindow::on_save_text_triggered() {
     SetPath window(this, true, false);
     window.setModal(true);
     window.exec();
@@ -156,7 +160,7 @@ void AES_main::on_save_text_triggered() {
     file.close();
 }
 
-void AES_main::on_save_result_triggered() {
+void MainWindow::on_save_result_triggered() {
     SetPath window(this, true, true);
     window.setModal(true);
     window.exec();
@@ -175,7 +179,7 @@ void AES_main::on_save_result_triggered() {
 }
 
 
-void AES_main::on_Quit_triggered() {
+void MainWindow::on_Quit_triggered() {
     QMessageBox::StandardButton reply = QMessageBox::question(this, "Выход из программы",
                                                               "Вы уверены, что хотите выйти?",
                                                               QMessageBox::Yes | QMessageBox::No);
@@ -188,7 +192,7 @@ void AES_main::on_Quit_triggered() {
 }
 
 
-void AES_main::on_showPass_clicked(bool checked) {
+void MainWindow::on_showPass_clicked(bool checked) {
     if (checked) {
         ui->setPass->setEchoMode(QLineEdit::EchoMode(0));
     } else {
@@ -198,7 +202,7 @@ void AES_main::on_showPass_clicked(bool checked) {
 
 //Выбор алгоритма
 
-void AES_main::on_Set_Algorithm_AES_256_triggered()
+void MainWindow::on_Set_Algorithm_AES_256_triggered()
 {
     if (!(ui->Set_Algorithm_AES_256->isChecked())){ //проверка, если он уже выбран
 
@@ -210,7 +214,7 @@ void AES_main::on_Set_Algorithm_AES_256_triggered()
 
 
 
-void AES_main::on_Set_Test_Algorithm_triggered()
+void MainWindow::on_Set_Test_Algorithm_triggered()
 {
     //Инструкция по созданию кнопки для нового алгоритма
     /*

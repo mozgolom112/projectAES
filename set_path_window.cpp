@@ -1,6 +1,7 @@
-#include "setpath.h"
-#include "ui_setpath.h"
-#include "aes_main.h"
+#include "main_window.h"
+
+#include "set_path_window.h"
+#include "ui_set_path_window.h"
 
 
 #include <QMessageBox>
@@ -10,12 +11,11 @@
 #include <QDate>
 
 
-
 SetPath::SetPath(QWidget *parent, const bool isWrite, const bool isResult) :
         QDialog(parent),
+        ui(new Ui::set_path_window),
         isWrite_(isWrite),
-        isResult_(isResult),
-        ui(new Ui::SetPath) {
+        isResult_(isResult) {
     ui->setupUi(this);
 
     ui->setpath->setText(QDir::currentPath()); //по умолчанию ставим путь, откуда вызвался exe

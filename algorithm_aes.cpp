@@ -1,13 +1,13 @@
-#include "cipher.h"
 #include "ialgorithm.h"
+#include "algorithm_aes.h"
 
 #include <QDebug>
+
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #include <openssl/rand.h>
 #include <openssl/aes.h>
-
 
 
 Cipher::Cipher(QObject* parent) : QObject(parent) {
@@ -31,7 +31,6 @@ QByteArray Cipher::encryptAlgorithm(QByteArray passphrase, QByteArray &data) {
 
     if (i != KEYSIZE) {
         qCritical() << "EVP_BytesToKey() error: " << ERR_error_string(ERR_get_error(), nullptr);
-        return QByteArray();
     }
 
     EVP_CIPHER_CTX* en;
@@ -41,7 +40,6 @@ QByteArray Cipher::encryptAlgorithm(QByteArray passphrase, QByteArray &data) {
     if (!EVP_EncryptInit_ex(en, EVP_aes_256_cbc(), nullptr, key, iv)) {
         qCritical() << "EVP_EncryptInit_ex() failed " << ERR_error_string(ERR_get_error(), nullptr);
         throw ::std::exception(ERR_error_string(ERR_get_error(), nullptr));
-        return QByteArray();
     }
 
     char *input = data.data();
@@ -53,21 +51,16 @@ QByteArray Cipher::encryptAlgorithm(QByteArray passphrase, QByteArray &data) {
     if (!EVP_EncryptInit_ex(en, nullptr, nullptr, nullptr, nullptr)) {
         qCritical() << "EVP_EncryptInit_ex() failed " << ERR_error_string(ERR_get_error(), nullptr);
         throw ::std::exception(ERR_error_string(ERR_get_error(), nullptr));
-        return QByteArray();
     }
-
-    // May have to repeat this for large files
 
     if (!EVP_EncryptUpdate(en, ciphertext, &c_len, reinterpret_cast<unsigned char *>(input), len)) {
         qCritical() << "EVP_EncryptUpdate() failed " << ERR_error_string(ERR_get_error(), nullptr);
         throw ::std::exception(ERR_error_string(ERR_get_error(), nullptr));
-        return QByteArray();
     }
 
     if (!EVP_EncryptFinal(en, ciphertext + c_len, &f_len)) {
         qCritical() << "EVP_EncryptFinal_ex() failed " << ERR_error_string(ERR_get_error(), nullptr);
         throw ::std::exception(ERR_error_string(ERR_get_error(), nullptr));
-        return QByteArray();
     }
 
     len = c_len + f_len;
@@ -107,7 +100,6 @@ QByteArray Cipher::decryptAlgorithm(QByteArray passphrase, QByteArray &data) {
     if (i != KEYSIZE) {
         qCritical() << "EVP_BytesToKey() error: " << ERR_error_string(ERR_get_error(), nullptr);
         throw ::std::exception(ERR_error_string(ERR_get_error(), nullptr));
-        return QByteArray();
     }
 
     EVP_CIPHER_CTX* de;
@@ -117,7 +109,6 @@ QByteArray Cipher::decryptAlgorithm(QByteArray passphrase, QByteArray &data) {
     if (!EVP_DecryptInit_ex(de, EVP_aes_256_cbc(), nullptr, key, iv)) {
         qCritical() << "EVP_DecryptInit_ex() failed" << ERR_error_string(ERR_get_error(), nullptr);
         throw ::std::exception(ERR_error_string(ERR_get_error(), nullptr));
-        return QByteArray();
     }
 
     char* input = data.data();
@@ -126,17 +117,14 @@ QByteArray Cipher::decryptAlgorithm(QByteArray passphrase, QByteArray &data) {
     int p_len = len, f_len = 0;
     unsigned char* plaintext = reinterpret_cast<unsigned char*>(malloc(p_len + AES_BLOCK_SIZE));
 
-    //May have to do this multiple times for large data???
     if (!EVP_DecryptUpdate(de, plaintext, &p_len, reinterpret_cast<unsigned char*>(input), len)) {
         qCritical() << "EVP_DecryptUpdate() failed " << ERR_error_string(ERR_get_error(), nullptr);
         throw ::std::exception(ERR_error_string(ERR_get_error(), nullptr));
-        return QByteArray();
     }
 
     if (!EVP_DecryptFinal_ex(de, plaintext + p_len, &f_len)) {
         qCritical() << "EVP_DecryptFinal_ex() failed " << ERR_error_string(ERR_get_error(), nullptr);
         throw ::std::exception(ERR_error_string(ERR_get_error(), nullptr));
-        return QByteArray();
     }
 
     len = p_len + f_len;
@@ -159,7 +147,6 @@ QByteArray Cipher::randomBytes(int size) {
     return buffer;
 
 }
-
 
 void Cipher::initalize() {
     ERR_load_crypto_strings();

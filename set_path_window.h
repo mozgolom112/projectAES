@@ -4,7 +4,7 @@
 #include <QDialog>
 
 namespace Ui {
-    class SetPath;
+    class set_path_window;
 }
 
 class SetPath : public QDialog {
@@ -25,7 +25,7 @@ private
     void on_clear_clicked();
 
 private:
-    Ui::SetPath *ui;
+    Ui::set_path_window *ui;
     bool isWrite_{false};
     bool isResult_{false};
     QString path;
