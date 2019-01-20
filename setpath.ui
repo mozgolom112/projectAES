@@ -45,7 +45,7 @@
       <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="placeholderText">
-      <string>H:/Qt/MyQT/Test_crypto/QFiletest/test.txt</string>
+      <string>Путь</string>
      </property>
     </widget>
    </item>
@@ -125,7 +125,7 @@
       </font>
      </property>
      <property name="text">
-      <string>2) Формат пути: H:/Qt/MyQT/Test_crypto/QFiletest/test.txt</string>
+      <string>2) Формат пути: Volume:/Folder1/.../Final_Folder/File_Name.txt</string>
      </property>
     </widget>
    </item>

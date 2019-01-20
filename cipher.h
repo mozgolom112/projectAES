@@ -2,21 +2,7 @@
 #define CIPHER_H
 
 #include <QObject>
-#include <QDebug>
-#include <QFile>
-#include <openssl/engine.h>
-#include <openssl/pem.h>
-#include <openssl/conf.h>
-#include <openssl/evp.h>
-#include <openssl/err.h>
-#include <openssl/rand.h>
-#include <openssl/aes.h>
-
-
-
-
-
-
+#include "ialgorithm.h"
 
 #define KEYSIZE 32
 #define IVSIZE 32
@@ -24,17 +10,11 @@
 #define SALTSIZE 8
 
 
-
-
-
-
-
-
-class Cipher : public QObject
+class Cipher : public QObject , public IAlgorithm
 {
     Q_OBJECT
 public:
-    explicit Cipher(QObject *parent = nullptr); /* здесь возможно нужно будет поставить 0**/
+    explicit Cipher(QObject* parent = nullptr);
     ~Cipher();
 
     /**
@@ -43,7 +23,7 @@ public:
      * @param data the byte array to encrypt
      * @return
      */
-    QByteArray encryptAES(QByteArray passphrase, QByteArray &data);
+    QByteArray encryptAlgorithm(QByteArray passphrase, QByteArray &data);
 
     /**
      * @brief Decrypt a byte array with AES 256 CBC
@@ -51,25 +31,19 @@ public:
      * @param data the byte array to decrypt
      * @return
      */
-    QByteArray decryptAES(QByteArray passphrase, QByteArray &data);
-
-
-    /**
-     * @brief Get a byte array filled with random information
-     * @param size The size of the byte array to generate
-     * @return
-     */
-    QByteArray randomBytes(int size);
-
-
+    QByteArray decryptAlgorithm(QByteArray passphrase, QByteArray &data);
 
 signals:
 
 public slots:
 
 private:
-
-
+        /**
+         * @brief Get a byte array filled with random information
+         * @param size The size of the byte array to generate
+         * @return
+         */
+        QByteArray randomBytes(int size);
 
         /**
         * @brief initalize the OpenSSL lib
@@ -80,10 +54,6 @@ private:
          * @brief Cleanup after the OpenSSL lib
          */
         void finalize();
-
-
-
-
 
 
 };

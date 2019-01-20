@@ -1,12 +1,15 @@
 #include "setpath.h"
 #include "ui_setpath.h"
 #include "aes_main.h"
-#include <QFile>
+
+
 #include <QMessageBox>
 #include <QDebug>
 #include <QDir>
 #include <QString>
 #include <QDate>
+
+
 
 SetPath::SetPath(QWidget *parent, const bool isWrite, const bool isResult) :
         QDialog(parent),

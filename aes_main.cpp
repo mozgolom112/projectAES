@@ -1,25 +1,48 @@
 #include "aes_main.h"
 #include "ui_aes_main.h"
 #include "setpath.h"
-#include <cipher.h>
+#include "cipher.h"
+
 #include <QClipboard>
 #include <QMessageBox>
-#include <QPixmap>
 #include <QDir>
 #include <QTextStream>
+
+
 
 AES_main::AES_main(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::AES_main) {
     ui->setupUi(this);
+    //Дефолтный метод стоит AES шифрование
+    Method_of_algorithm = new Cipher(nullptr);
+
+
+    //группа алгоритмов
+    QActionGroup* group  = new QActionGroup(this);
+
+    //Делаем их Checkable
+    ui->Set_Algorithm_AES_256->setCheckable(true);
+    ui->Set_Test_Algorithm->setCheckable(true);
+
+    //Добавляем их в группу алгоритмов
+    ui->Set_Algorithm_AES_256->setActionGroup(group);
+    ui->Set_Test_Algorithm->setActionGroup(group);
+
+    //Для демонстрации закомментируйте нижние две строчки
+    ui->Set_Test_Algorithm->setDisabled(true);
+    ui->Set_Test_Algorithm->setVisible(false);
+
+    //Ставим уникальность галочки
+    group->setExclusive(true);
 }
 
 AES_main::~AES_main() {
+    delete Method_of_algorithm;
     delete ui;
 }
 
 void AES_main::on_encrypt_clicked() {
-    Cipher cWrapper;
 
 
     QString textforcipher = ui->setText->toPlainText();
@@ -34,11 +57,11 @@ void AES_main::on_encrypt_clicked() {
             QByteArray plain = QByteArray::fromStdString(textforcipher.toStdString());
 
             try {
-                QByteArray encrypted = cWrapper.encryptAES(passphrase.toLatin1(), plain);
+                QByteArray encrypted = Method_of_algorithm->encryptAlgorithm(passphrase.toLatin1(), plain);
 
                 ui->takeText->setText(encrypted.toBase64());
                 //производим очистку текста, с которым мы работали, после работы программы
-                ui->setPass->clear();
+                ui->setText->clear();
             }
             catch (...) {
                 QMessageBox::critical(this, "Error", "Ошибка шифрования");
@@ -49,7 +72,6 @@ void AES_main::on_encrypt_clicked() {
 }
 
 void AES_main::on_decrypt_clicked() {
-    Cipher cWrapper;
 
 
     if (ui->setText->toPlainText().toStdString() == "") {
@@ -65,7 +87,7 @@ void AES_main::on_decrypt_clicked() {
             try {
 
 
-                QByteArray decrypted = cWrapper.decryptAES(passphrase.toLatin1(), encrypted);
+                QByteArray decrypted = Method_of_algorithm->decryptAlgorithm(passphrase.toLatin1(), encrypted);
 
                 ui->takeText->setText(decrypted);
                 //производим очистку текста, с которым мы работали, после работы программы
@@ -172,4 +194,31 @@ void AES_main::on_showPass_clicked(bool checked) {
     } else {
         ui->setPass->setEchoMode(QLineEdit::EchoMode(2));
     }
+}
+
+//Выбор алгоритма
+
+void AES_main::on_Set_Algorithm_AES_256_triggered()
+{
+    if (!(ui->Set_Algorithm_AES_256->isChecked())){ //проверка, если он уже выбран
+
+    delete Method_of_algorithm;
+
+    Method_of_algorithm = new Cipher(nullptr);
+    }
+}
+
+
+
+void AES_main::on_Set_Test_Algorithm_triggered()
+{
+    //Инструкция по созданию кнопки для нового алгоритма
+    /*
+    if (!(ui->Set_Test_Algorithm->isChecked())){    //проверка, если Ваш алгоритм уже выбран
+
+    delete Method_of_algorithm;                      //удаляем предыдущий алгоритм
+
+    Method_of_algorithm = new Test_algorithm(nullptr);  //создаете экземпляр нового алгоритма, который должен быть унаследован от IAlgorithm
+    }
+    */
 }

@@ -20,9 +20,7 @@ public:
 private
     slots:
 
-            void
-
-    on_Choose_clicked();
+    void on_Choose_clicked();
 
     void on_clear_clicked();
 

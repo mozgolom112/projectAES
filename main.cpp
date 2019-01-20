@@ -1,6 +1,7 @@
-#include <aes_main.h>
-#include <QApplication>
+#include "aes_main.h"
 #include "cipher.h"
+
+#include <QApplication>
 
 
 int main(int argc, char *argv[]) {
