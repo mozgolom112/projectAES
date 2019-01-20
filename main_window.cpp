@@ -19,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
         ui(new Ui::main_window){
     ui->setupUi(this);
     //Дефолтный метод стоит AES шифрование
-    Method_of_algorithm = new Cipher(nullptr);
-
+    Method_of_algorithm = new AES_algorithm(nullptr);
+    this->setWindowTitle("AES_256 algorithm");
 
     //группа алгоритмов
     QActionGroup* group  = new QActionGroup(this);
@@ -48,19 +48,24 @@ MainWindow::~MainWindow() {
 
 void MainWindow::on_encrypt_clicked() {
 
-
     QString textforcipher = ui->setText->toPlainText();
     QString pass = ui->setPass->text();
-    if (pass == "") {
+    if (pass == "")
+    {
         QMessageBox::critical(this, "Error", "Введите пароль");
-    } else {
-        if (textforcipher == "") {
+    }
+    else
+    {
+        if (textforcipher == "")
+        {
             QMessageBox::critical(this, "Error", "Введите текст для шифрования");
-        } else {
+        }
+        else
+        {
             QString passphrase = pass;
             QByteArray plain = QByteArray::fromStdString(textforcipher.toStdString());
-
-            try {
+            try
+            {
                 QByteArray encrypted = Method_of_algorithm->encryptAlgorithm(passphrase.toLatin1(), plain);
 
                 ui->takeText->setText(encrypted.toBase64());
@@ -77,53 +82,62 @@ void MainWindow::on_encrypt_clicked() {
 
 void MainWindow::on_decrypt_clicked() {
 
-
-    if (ui->setText->toPlainText().toStdString() == "") {
+    if (ui->setText->toPlainText().toStdString() == "")
+    {
         QMessageBox::critical(this, "Error", "Введите текст для дешифрования");
-    } else {
+    }
+    else
+    {
         QByteArray encrypted = QByteArray::fromBase64(
                 QByteArray::fromStdString(ui->setText->toPlainText().toStdString()));
 
         QString passphrase = ui->setPass->text();
-        if (passphrase == "") {
+        if (passphrase == "")
+        {
             QMessageBox::critical(this, "Error", "Введите пароль");
-        } else {
-            try {
-
-
+        }
+        else
+        {
+            try
+            {
                 QByteArray decrypted = Method_of_algorithm->decryptAlgorithm(passphrase.toLatin1(), encrypted);
 
                 ui->takeText->setText(decrypted);
+
                 //производим очистку текста, с которым мы работали, после работы программы
                 ui->setText->clear();
-            } catch (...) {
+            }
+            catch (...) {
                 QMessageBox::critical(this, "Error",
                                       "Ошибка дешифрования.\nУбедитесь, что ввели правильный текст для дешифроки и правильный пароль");
             }
         }
     }
-
 }
 
-
 void MainWindow::on_Button_for_copy1_clicked() {
+
     QApplication::clipboard()->setText(ui->setText->toPlainText());
 }
 
 void MainWindow::on_Button_for_cut1_clicked() {
+
     ui->setText->clear();
     ui->setText->setFocus();
 }
 
 void MainWindow::on_Button_for_copy2_clicked() {
+
     QApplication::clipboard()->setText(ui->takeText->toPlainText());
 }
 
 void MainWindow::on_Button_for_cut1_2_clicked() {
+
     ui->takeText->clear();
 }
 
 void MainWindow::on_Load_triggered() {
+
     SetPath window(this, false, false);
     window.setModal(true);
     window.exec();
@@ -134,8 +148,6 @@ void MainWindow::on_Load_triggered() {
         QString str = stream.readAll();
 
         ui->setText->setPlainText(str);
-
-
     }
     ui->setText->moveCursor(QTextCursor::End);
     file.close();
@@ -143,6 +155,7 @@ void MainWindow::on_Load_triggered() {
 }
 
 void MainWindow::on_save_text_triggered() {
+
     SetPath window(this, true, false);
     window.setModal(true);
     window.exec();
@@ -161,6 +174,7 @@ void MainWindow::on_save_text_triggered() {
 }
 
 void MainWindow::on_save_result_triggered() {
+
     SetPath window(this, true, true);
     window.setModal(true);
     window.exec();
@@ -180,6 +194,7 @@ void MainWindow::on_save_result_triggered() {
 
 
 void MainWindow::on_Quit_triggered() {
+
     QMessageBox::StandardButton reply = QMessageBox::question(this, "Выход из программы",
                                                               "Вы уверены, что хотите выйти?",
                                                               QMessageBox::Yes | QMessageBox::No);
@@ -193,6 +208,7 @@ void MainWindow::on_Quit_triggered() {
 
 
 void MainWindow::on_showPass_clicked(bool checked) {
+
     if (checked) {
         ui->setPass->setEchoMode(QLineEdit::EchoMode(0));
     } else {
@@ -200,29 +216,33 @@ void MainWindow::on_showPass_clicked(bool checked) {
     }
 }
 
+
 //Выбор алгоритма
 
-void MainWindow::on_Set_Algorithm_AES_256_triggered()
-{
+void MainWindow::on_Set_Algorithm_AES_256_triggered() {
+
     if (!(ui->Set_Algorithm_AES_256->isChecked())){ //проверка, если он уже выбран
 
     delete Method_of_algorithm;
 
-    Method_of_algorithm = new Cipher(nullptr);
-    }
+    Method_of_algorithm = new AES_algorithm(nullptr);
+
+    this->setWindowTitle("AES_256 algorithm");
+    }    
 }
 
 
 
-void MainWindow::on_Set_Test_Algorithm_triggered()
-{
+void MainWindow::on_Set_Test_Algorithm_triggered() {
     //Инструкция по созданию кнопки для нового алгоритма
     /*
-    if (!(ui->Set_Test_Algorithm->isChecked())){    //проверка, если Ваш алгоритм уже выбран
+    if (!(ui->Set_Test_Algorithm->isChecked())){        //проверка, если Ваш алгоритм уже выбран
 
-    delete Method_of_algorithm;                      //удаляем предыдущий алгоритм
+    delete Method_of_algorithm;                         //удаляем предыдущий алгоритм
 
     Method_of_algorithm = new Test_algorithm(nullptr);  //создаете экземпляр нового алгоритма, который должен быть унаследован от IAlgorithm
+
+    this->setWindowTitle("Name algorithm");             //добавьте название алгоритма в title чтобы пользователь мог видеть, в чем он работает
     }
     */
 }

@@ -32,17 +32,18 @@ SetPath::SetPath(QWidget *parent, const bool isWrite, const bool isResult) :
 
 
 SetPath::~SetPath() {
+
     delete ui;
 }
 
 QString SetPath::GetPath() {
+
     return path;
 }
 
 void SetPath::on_Choose_clicked() {
-    path = ui->setpath->text().trimmed();
-//.trimmed() удаление в начале и в конце пробелов и табуляции
-    qDebug() << path;
+
+    path = ui->setpath->text().trimmed(); // удаление в начале и в конце пробелов и табуляции
     if (!path.isEmpty()) {
         if (path.endsWith(".txt")) {
             if (QFile(path).exists()) {
@@ -51,7 +52,6 @@ void SetPath::on_Choose_clicked() {
                                                                               "Файл с таким именем существует. Хотите его перезаписать?",
                                                                               QMessageBox::Yes | QMessageBox::No);
                     if (reply == QMessageBox::No) {
-
                     } else {
                         close();
                     }
@@ -89,6 +89,7 @@ void SetPath::on_Choose_clicked() {
 }
 
 void SetPath::on_clear_clicked() {
+
     ui->setpath->clear();
     ui->setpath->setFocus();
 }
