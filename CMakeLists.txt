@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
 set(CMAKE_CXX_STANDARD 14)
-project(prjAES)
+project(prjCrypto)
 set (CMAKE_PREFIX_PATH "H:\\Qt\\5.11.2\\msvc2017_64\\")
 set (OPENSSL_ROOT_DIR "C:\\Program Files\\OpenSSL-Win64\\lib\\")
 set (QT_ROOT_DIR "H:\\Qt\\5.11.2\\msvc2017_64\\include\\")
@@ -20,24 +20,30 @@ find_package(Qt5Core CONFIG REQUIRED)
 find_package(OpenSSL)
 
 # Populate a CMake variable with the sources
-set(cipherAES_SRCS
-aes_main.cpp
-aes_main.h
+set(crypto_prog_SRCS
 main.cpp
-cipher.cpp
-cipher.h
-setpath.cpp
-setpath.h
-aes_main.ui
-setpath.ui
+
+main_window.h
+main_window.cpp
+main_window.ui
+
+set_path_window.h
+set_path_window.cpp
+set_path_window.ui
+
+ialgorithm.h
+
+algorithm_aes.cpp
+algorithm_aes.h
+
 resourses.qrc
 )
-# Tell CMake to create the cipherAES executable
-add_executable(cipherAES ${cipherAES_SRCS})
+# Tell CMake to create the program_for_crypt executable
+add_executable(program_for_crypt ${crypto_prog_SRCS})
 # Use the Widgets module from Qt 5
-target_link_libraries(cipherAES Qt5::Widgets)
-target_link_libraries(cipherAES Qt5::Core)
-target_link_libraries(cipherAES ${OPENSSL_LIBRARIES})
+target_link_libraries(program_for_crypt Qt5::Widgets)
+target_link_libraries(program_for_crypt Qt5::Core)
+target_link_libraries(program_for_crypt ${OPENSSL_LIBRARIES})
 
 include_directories(${OPENSSL_INCLUDE_DIR})
 include_directories(${QtWidgets_INCLUDE_DIR})
