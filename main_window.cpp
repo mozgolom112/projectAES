@@ -18,6 +18,16 @@ MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::main_window){
     ui->setupUi(this);
+
+    // Инициализируем объекты горячих клавиш, устанавливаем сочетание и связывем их со слотами
+    keyCtrlD = new QShortcut(this);
+    keyCtrlD->setKey(Qt::CTRL + Qt::Key_D);
+    connect(keyCtrlD, SIGNAL(activated()), this, SLOT(on_decrypt_clicked()));
+
+    keyCtrlE = new QShortcut(this);
+    keyCtrlE->setKey(Qt::CTRL + Qt::Key_E);
+    connect(keyCtrlE, SIGNAL(activated()), this, SLOT(on_encrypt_clicked()));
+
     //Дефолтный метод стоит AES шифрование
     Method_of_algorithm = new AES_algorithm(nullptr);
     this->setWindowTitle("AES_256 algorithm");

@@ -11,7 +11,8 @@
 
 
 /**
- * @brief The AES_algorithm class - realized class, which use AES_256 algorithm for (de\en)crypt. Powered by OpenSSl
+ * @brief The AES_algorithm class - realized class, which use AES_256 algorithm for (de\en)crypt.
+ * Powered by OpenSSl
  */
 class AES_algorithm : public QObject , public IAlgorithm
 {

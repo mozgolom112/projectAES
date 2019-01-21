@@ -1,10 +1,12 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include "algorithm_aes.h"
+
 #include <QMainWindow>
 #include <QActionGroup>
+#include <QShortcut>
 
-#include "algorithm_aes.h"
 
 namespace Ui {
     class main_window;
@@ -25,12 +27,14 @@ private
     /**
      * @brief on_encrypt_clicked - signal processing of the "Encrypt"("Шифрование") button.
      * Encrypts data
+     * Use hot key: Ctrl + E
      */
     void on_encrypt_clicked();
 
     /**
      * @brief on_decrypt_clicked - signal processing of the "Decrypt"("Дешифрование") button.
      * Decrypts data
+     * Use hot key: Ctrl + D
      */
     void on_decrypt_clicked();
 
@@ -105,7 +109,6 @@ private
      * Instructions for creating an algorithm selection button
      */
     void on_Set_Test_Algorithm_triggered();
-
 private:
     Ui::main_window *ui;
 
@@ -120,6 +123,19 @@ private:
       *Visualize the selection of the current algorithm.
       */
     QActionGroup* Algorithm_group {nullptr};
+
+    /**
+     * @brief keyCtrlE - object for hot keyCtrl + E.
+     * Hot key for botton "Encrypt"("Шифрование")
+     */
+    QShortcut* keyCtrlE {nullptr};
+
+    /**
+     * @brief keyCtrlD - object for hot keyCtrl + D.
+     * Hot key for botton "Decrypt"("Дешифрование")
+     */
+    QShortcut* keyCtrlD {nullptr};
+
 };
 
 #endif // MAIN_WINDOW_H
